@@ -25,4 +25,5 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Loading CodeXGLUE dataset
 - Loading base Phi-1.5 model
