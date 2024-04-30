@@ -19,3 +19,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - File fetching by cloning the repository due to GitHub API limitations
+
+
+## [0.2.0] - 30-04-2024
+
+### Added
+
+- Loading base Phi-1.5 model
