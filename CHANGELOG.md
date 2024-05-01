@@ -27,3 +27,10 @@ All notable changes to this project will be documented in this file.
 
 - Loading CodeXGLUE dataset
 - Loading base Phi-1.5 model
+
+
+## [0.2.1] - 01-05-2024
+
+### Changed
+
+- Saving model-tasks in JSONL files

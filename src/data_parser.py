@@ -2,23 +2,46 @@ import os
 import re
 
 
-def save_task(task_dir, instruction, solution):
+def save_tasks(tasks_dict, task_file):
     """
-    Save the provided task instruction and solution to the specified directory
+    Save the provided tasks dictionary to the provided task file
 
-    :param task_dir:
-    :param instruction:
-    :param solution:
+    :param tasks_dict:
+    :param task_file:
     :return:
     """
-    if not os.path.exists(task_dir):
-        os.makedirs(task_dir)
+    if os.path.exists(task_file):
+        with open(task_file, 'a', errors='ignore') as file:
+            for signature, body in tasks_dict.items():
+                file.write('{"signature": "' + signature + '", "body": "' + body + '"}\n')
+    else:
+        with open(task_file, 'w', errors='ignore') as file:
+            for signature, body in tasks_dict.items():
+                file.write('{"signature": "' + signature + '", "body": "' + body + '"}\n')
 
-    with open(task_dir + "instructions.txt", "a", errors='ignore') as i_file:
-        i_file.write(instruction + '\n')
 
-    with open(task_dir + "solutions.txt", "a", errors='ignore') as s_file:
-        s_file.write(solution + '\n')
+def split_signature_body(matches, split_char):
+    """
+    Split the signature and body of the provided matches
+
+    :param matches:
+    :param split_char:
+    :return:
+    """
+    tasks_dict = {}
+
+    for match in matches:
+        parts = match.split(split_char)
+
+        signature = parts[0] + split_char
+        signature = signature.strip()
+
+        body = split_char.join(parts[1:])
+        body = body.strip()
+
+        tasks_dict[signature] = body
+
+    return tasks_dict
 
 
 def filter_invalid(match):
@@ -70,16 +93,16 @@ def format_match(match):
     return match
 
 
-def find_matches(patterns, split_char, code, task_dir):
+def find_matches(code, patterns):
     """
-    Find matches in the provided code and save them as tasks
+    Find all matches in the provided code
 
-    :param patterns:
-    :param split_char:
     :param code:
-    :param task_dir:
+    :param patterns:
     :return:
     """
+    all_matches = []
+
     for pattern in patterns:
         matches = re.findall(pattern, code)
 
@@ -89,110 +112,67 @@ def find_matches(patterns, split_char, code, task_dir):
             if match is None:
                 continue
 
-            parts = match.split(split_char)
-            instruction = parts[0] + split_char
-            solution = split_char.join(parts[1:])
+            all_matches.append(match)
 
-            save_task(task_dir, instruction, solution)
+    return all_matches
 
 
-def conditional_statement_task(code, data_dir):
+def extract_completion_tasks(code):
     """
-    Extract conditional statement tasks from the provided code file
-
-    :param code:
-    :param data_dir:
-    :return:
-    """
-    task_dir = data_dir + "conditional_statement_task/"
-
-    if_pattern = re.compile(r'if\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL)
-    else_if_pattern = re.compile(r'else\s+if\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL)
-    else_pattern = re.compile(r'else\s*\{.*?}', re.DOTALL)
-    when_pattern = re.compile(r'when\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL)
-
-    patterns = [if_pattern, else_if_pattern, else_pattern, when_pattern]
-    find_matches(patterns, '{', code, task_dir)
-
-
-def function_declaration_task(code, data_dir):
-    """
-    Extract function declaration tasks from the provided code file
-
-    :param code:
-    :param data_dir:
-    :return:
-    """
-    task_dir = data_dir + "function_declaration_task/"
-
-    fun_pattern = re.compile(r'fun\s+\w+\s*\([^{}=]*?\)\s*\{.+?}', re.DOTALL)
-
-    patterns = [fun_pattern]
-    find_matches(patterns, '{', code, task_dir)
-
-
-def import_statement_task(code, data_dir):
-    """
-    Extract import statement tasks from the provided code file
-
-    :param code:
-    :param data_dir:
-    :return:
-    """
-    task_dir = data_dir + "import_statement_task/"
-
-    import_pattern = re.compile(r'import\s+.*?\n')
-    package_pattern = re.compile(r'package\s+.*?\n')
-
-    patterns = [import_pattern, package_pattern]
-    find_matches(patterns, '.', code, task_dir)
-
-
-def loop_statement_task(code, data_dir):
-    """
-    Extract loop statement tasks from the provided code file
-
-    :param code:
-    :param data_dir:
-    :return:
-    """
-    task_dir = data_dir + "loop_statement_task/"
-
-    for_pattern = re.compile(r'for\s*\([^{}\n]*?\)\s*\{[^{}]*}', re.DOTALL)
-    while_pattern = re.compile(r'while\s*\([^{}\n]*?\)\s*\{[^{}]*}', re.DOTALL)
-
-    patterns = [for_pattern, while_pattern]
-    find_matches(patterns, '{', code, task_dir)
-
-
-def variable_declaration_task(code, data_dir):
-    """
-    Extract variable declaration tasks from the provided code file
-
-    :param code:
-    :param data_dir:
-    :return:
-    """
-    task_dir = data_dir + "variable_declaration_task/"
-
-    var_pattern = re.compile(r'var\s+\w+\s*=\s*.*\n')
-    val_pattern = re.compile(r'val\s+\w+\s*=\s*.*\n')
-
-    patterns = [var_pattern, val_pattern]
-    find_matches(patterns, '=', code, task_dir)
-
-
-def extract_tasks(code):
-    """
-    Extract tasks from the provided code file
+    Extract completion tasks from the provided code
 
     :param code:
     :return:
     """
-    data_dir = "../data/model_tasks/"
+    data_dir = "../data/Kotlin/completion_tasks/"
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
 
-    conditional_statement_task(code, data_dir)
-    function_declaration_task(code, data_dir)
-    import_statement_task(code, data_dir)
-    loop_statement_task(code, data_dir)
-    variable_declaration_task(code, data_dir)
+    task_files = ["condition_tasks.jsonl",
+                  "function_tasks.jsonl",
+                  "import_tasks.jsonl",
+                  "loop_tasks.jsonl",
+                  "variable_tasks.jsonl"]
+
+    task_patterns = [[re.compile(r'if\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL),            # if statement
+                      re.compile(r'else\s+if\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL),     # else if statement
+                      re.compile(r'else\s*\{.*?}', re.DOTALL),                          # else statement
+                      re.compile(r'when\s*\([^{}\n]*?\)\s*\{.*?}', re.DOTALL)],         # when statement
+
+                     [re.compile(r'fun\s+\w+\s*\([^{}=]*?\)\s*\{.+?}', re.DOTALL)],     # function declaration
+
+                     [re.compile(r'import\s+.*?\n'),                                            # import statement
+                      re.compile(r'package\s+.*?\n')],                                          # package statement
+
+                     [re.compile(r'for\s*\([^{}\n]*?\)\s*\{[^{}]*}', re.DOTALL),        # for loop
+                      re.compile(r'while\s*\([^{}\n]*?\)\s*\{[^{}]*}', re.DOTALL)],     # while loop
+
+                     [re.compile(r'var\s+\w+\s*=\s*.*\n'),                                      # var declaration
+                      re.compile(r'val\s+\w+\s*=\s*.*\n')]                                      # val declaration
+                     ]
+
+    split_chars = ['{', '{', '.', '{', '=']
+
+    for task_file, task_pattern, split_char in zip(task_files, task_patterns, split_chars):
+        matches = find_matches(code, task_pattern)
+        tasks_dict = split_signature_body(matches, split_char)
+        save_tasks(tasks_dict, data_dir + task_file)
+
+
+def tasks_summary():
+    """
+    Print the summary of completion tasks
+
+    :return:
+    """
+    data_dir = "../data/Kotlin/completion_tasks/"
+
+    total_tasks = 0
+    for task_file in os.listdir(data_dir):
+        with open(data_dir + task_file, 'r') as file:
+            lines = file.readlines()
+            print(task_file + ': ' + str(len(lines)))
+            total_tasks += len(lines)
+
+    print('--------------------')
+    print('Total number: ' + str(total_tasks))
