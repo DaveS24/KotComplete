@@ -1,3 +1,4 @@
+import json
 import os
 import re
 
@@ -176,3 +177,22 @@ def tasks_summary():
 
     print('--------------------')
     print('Total number: ' + str(total_tasks))
+
+
+def load_dataset(file_path, batch_size):
+    """
+    Generator to load the dataset in batches
+
+    :param file_path:
+    :param batch_size:
+    :return:
+    """
+    with open(file_path, 'r') as file:
+        dataset = [json.loads(line) for line in file]
+
+        for i in range(0, len(dataset), batch_size):
+            tasks = dataset[i:i + batch_size]
+            instruction = [task['signature'] for task in tasks]
+            target = [task['body'] for task in tasks]
+
+            yield instruction, target

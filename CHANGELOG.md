@@ -34,3 +34,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Saving model-tasks in JSONL files
+
+
+## [0.2.2] - 02-05-2024
+
+### Added
+
+- Generator to load the dataset in batches
+- Evaluation of the model on the CodeXGLUE test set using BLEU score

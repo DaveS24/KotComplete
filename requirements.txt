@@ -1,4 +1,4 @@
-datasets~=2.12.0
+nltk~=3.8.1
 requests~=2.31.0
-transformers~=4.37.2
 tqdm~=4.65.0
+transformers~=4.37.2
