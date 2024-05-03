@@ -42,3 +42,11 @@ All notable changes to this project will be documented in this file.
 
 - Generator to load the dataset in batches
 - Evaluation of the model on the CodeXGLUE test set using BLEU score
+
+
+## [0.2.3] - 03-05-2024
+
+### Added
+
+- Duplicate elimination in the Kotlin dataset
+- Train-test split for the Kotlin dataset
