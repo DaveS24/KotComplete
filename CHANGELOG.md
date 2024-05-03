@@ -57,3 +57,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Set up the training pipeline for the model
+
+
+## [0.3.1] - 03-05-2024
+
+### Added
+
+- Configurations for the training pipeline
