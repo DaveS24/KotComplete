@@ -50,3 +50,10 @@ All notable changes to this project will be documented in this file.
 
 - Duplicate elimination in the Kotlin dataset
 - Train-test split for the Kotlin dataset
+
+
+## [0.3.0] - 03-05-2024
+
+### Added
+
+- Set up the training pipeline for the model
