@@ -98,7 +98,7 @@ def format_match(match):
     for string_literal in string_literals:
         match = match.replace(string_literal, '<STR_LIT>')
 
-    number_literals = re.findall(r'\d+', match)
+    number_literals = re.findall(r'-?\d+\.?\d*', match)
     for number_literal in number_literals:
         match = match.replace(number_literal, '<NUM_LIT>')
 
