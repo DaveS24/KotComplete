@@ -64,3 +64,4 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Configurations for the training pipeline
+- Creation of the training Dataset from the jsonl file
