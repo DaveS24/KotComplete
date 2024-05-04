@@ -65,3 +65,11 @@ All notable changes to this project will be documented in this file.
 
 - Configurations for the training pipeline
 - Creation of the training Dataset from the jsonl file
+
+
+## [0.3.2] - 04-05-2024
+
+### Added
+
+- Option to train on a subset of the dataset
+- Linkage to wandb for tracking the training process
