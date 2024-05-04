@@ -82,3 +82,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Saving the model to Google Drive
+
+
+## [0.4.0] - 04-05-2024
+
+### Added
+
+- Set up base model analysis pipeline
