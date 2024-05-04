@@ -2,7 +2,9 @@ import json
 import os
 import random
 import re
+import requests
 
+from datasets import Dataset
 from tqdm import tqdm
 
 
@@ -220,20 +222,39 @@ def split_data(data_dir, output_dir, split_ratio=0.8):
     tasks_summary(output_dir)
 
 
-def load_dataset(file_path, batch_size):
-    """
-    Generator to load the dataset in batches
+def load_and_tokenize_dataset(url, tokenizer, use_subset=False, subset_ratio=0.1):
+    dataset = []
 
-    :param file_path:
-    :param batch_size:
-    :return:
-    """
-    with open(file_path, 'r') as file:
-        dataset = [json.loads(line) for line in file]
+    response = requests.get(url)
+    lines = response.iter_lines(decode_unicode=True)
+    for line in lines:
+        data = json.loads(line)
+        dataset.append(data)
 
-        for i in range(0, len(dataset), batch_size):
-            tasks = dataset[i:i + batch_size]
-            instruction = [task['signature'] for task in tasks]
-            target = [task['body'] for task in tasks]
+    if use_subset:
+        subset_size = int(len(dataset) * subset_ratio)
+        dataset = dataset[:subset_size]
 
-            yield instruction, target
+    input_texts = [data["signature"] for data in dataset]
+    target_texts = [data["body"] for data in dataset]
+
+    tokenized_inputs = tokenizer(input_texts, padding=True, truncation=True, return_tensors="pt")
+    tokenized_targets = tokenizer(target_texts, padding=True, truncation=True, return_tensors="pt")
+
+    tokenized_inputs["labels"] = tokenized_targets["input_ids"]
+
+    dataset = Dataset.from_dict({
+        "input_ids": tokenized_inputs["input_ids"],
+        "attention_mask": tokenized_inputs["attention_mask"],
+        "labels": tokenized_inputs["labels"]
+    })
+
+    return dataset
+
+
+def display_dataset_info(dataset):
+    print("Dataset Info")
+    print("============")
+    print("Number of samples:", dataset.num_rows)
+    print("Column names:", dataset.column_names)
+    print("Features:", dataset.features)

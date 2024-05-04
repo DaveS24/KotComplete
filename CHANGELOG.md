@@ -73,3 +73,5 @@ All notable changes to this project will be documented in this file.
 
 - Option to train on a subset of the dataset
 - Linkage to wandb for tracking the training process
+- Data loading from the GitHub repository
+- Src code loading from the GitHub repository

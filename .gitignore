@@ -1,2 +1,4 @@
 .idea
-data/
+data/Kotlin/kotlin_files/
+data/Kotlin/completion_tasks/
+model/
