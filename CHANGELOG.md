@@ -75,3 +75,10 @@ All notable changes to this project will be documented in this file.
 - Linkage to wandb for tracking the training process
 - Data loading from the GitHub repository
 - Src code loading from the GitHub repository
+
+
+## [0.3.3] - 04-05-2024
+
+### Added
+
+- Saving the model to Google Drive
