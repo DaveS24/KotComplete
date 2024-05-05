@@ -3,7 +3,7 @@
 Welcome to KotComplete, where I (try to) take Kotlin code completion to the next level!  
 This project aims to enhance Language Model (LM) capabilities for underrepresented programming languages, focusing primarily on Kotlin.
 
-> **To run the code**, open the notebooks in Google Colab or a similar environment and follow the instructions provided.
+> **To run the code**, open the notebooks (except for prepare_data.ipynb) in Google Colab or a similar environment and follow the instructions provided.
 
 ## Overview
 

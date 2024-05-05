@@ -118,3 +118,15 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Information about the project in the README
+
+
+## [0.8.0] - 05-05-2024
+
+### Added
+
+- Detailed information in each notebook
+
+
+## [1.0.0] - 05-05-2024
+
+- Final version of the project
