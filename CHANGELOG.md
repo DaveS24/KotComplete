@@ -104,3 +104,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Completed tuning the model
+
+
+## [0.6.0] - 05-05-2024
+
+### Added
+
+- Completed analysing the models
