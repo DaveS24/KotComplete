@@ -111,3 +111,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Completed analysing the models
+
+
+## [0.7.0] - 05-05-2024
+
+### Added
+
+- Information about the project in the README
