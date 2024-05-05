@@ -97,3 +97,10 @@ All notable changes to this project will be documented in this file.
 
 - Finish the base model analysis pipeline
 - Finish the tuned model analysis pipeline
+
+
+## [0.5.0] - 05-05-2024
+
+### Added
+
+- Completed tuning the model
