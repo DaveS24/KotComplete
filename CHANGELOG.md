@@ -89,3 +89,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Set up base model analysis pipeline
+
+
+## [0.4.1] - 05-05-2024
+
+### Added
+
+- Finish the base model analysis pipeline
+- Finish the tuned model analysis pipeline
